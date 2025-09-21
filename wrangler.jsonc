@@ -10,30 +10,30 @@
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
   "assets": {
     "binding": "ASSETS",
-    "directory": ".open-next/assets",
+    "directory": ".open-next/assets"
   },
   "observability": {
-    "enabled": true,
+    "enabled": true
   },
   "d1_databases": [
     {
       "binding": "maskmail_db",
       "database_name": "maskmail-db",
       "database_id": "ff6d0d3c-0d98-42a2-9242-abefc3458128",
-      "migrations_dir": "./src/drizzle",
-    },
+      "migrations_dir": "./src/drizzle"
+    }
   ],
   "r2_buckets": [
     {
       "bucket_name": "maskmail-bucket",
-      "binding": "maskmail_bucket",
-    },
+      "binding": "maskmail_bucket"
+    }
   ],
   /**
    * Custom Domain Routes
    * Configure custom domain routing for the Worker
    */
-  "routes": ["maskmail.cc/*", "www.maskmail.cc/*"],
+  "routes": ["maskmail.cc/*", "www.maskmail.cc/*"]
   /**
    * Smart Placement
    * Docs: https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement

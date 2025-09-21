@@ -27,7 +27,8 @@
     "db:reset:local": "wrangler d1 execute maskmail-db --local --command=\"DROP TABLE IF EXISTS todos;\" && pnpm run db:migrate:local",
     "cf:secret": "npx wrangler secret put",
     "cf-typegen": "pnpm exec wrangler types && pnpm exec wrangler types --env-interface CloudflareEnv ./cloudflare-env.d.ts",
-    "lint": "npx biome format --write"
+    "lint": "npx biome format --write src/",
+    "lint:check": "npx biome check src/"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.1",

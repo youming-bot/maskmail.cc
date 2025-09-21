@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Upload, X } from "lucide-react";
-import Image from "next/image";
-import { useState, useTransition } from "react";
-import { useForm } from "react-hook-form";
-import type { z } from "zod";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Checkbox } from "@/components/ui/checkbox";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Upload, X } from 'lucide-react';
+import Image from 'next/image';
+import { useState, useTransition } from 'react';
+import { useForm } from 'react-hook-form';
+import type { z } from 'zod';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
   Form,
   FormControl,
@@ -17,27 +17,27 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import type { AuthUser } from "@/modules/auth/models/user.model";
+} from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
+import type { AuthUser } from '@/modules/auth/models/user.model';
 import {
   TodoPriority,
   type TodoPriorityType,
   TodoStatus,
   type TodoStatusType,
-} from "@/modules/todos/models/todo.enum";
-import { insertTodoSchema } from "@/modules/todos/schemas/todo.schema";
-import { createTodoAction } from "../actions/create-todo.action";
-import { updateTodoAction } from "../actions/update-todo.action";
-import { AddCategory } from "./add-category";
+} from '@/modules/todos/models/todo.enum';
+import { insertTodoSchema } from '@/modules/todos/schemas/todo.schema';
+import { createTodoAction } from '../actions/create-todo.action';
+import { updateTodoAction } from '../actions/update-todo.action';
+import { AddCategory } from './add-category';
 
 type Category = {
   id: number;
@@ -67,32 +67,26 @@ interface TodoFormProps {
 
 type FormData = z.infer<typeof insertTodoSchema>;
 
-export function TodoForm({
-  user,
-  categories: initialCategories,
-  initialData,
-}: TodoFormProps) {
+export function TodoForm({ user, categories: initialCategories, initialData }: TodoFormProps) {
   const [isPending, startTransition] = useTransition();
   const [imageFile, setImageFile] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(
-    initialData?.imageUrl || null,
-  );
+  const [imagePreview, setImagePreview] = useState<string | null>(initialData?.imageUrl || null);
   const [categories, setCategories] = useState<Category[]>(initialCategories);
 
   const form = useForm<FormData>({
     resolver: zodResolver(insertTodoSchema),
     defaultValues: {
-      title: initialData?.title || "",
-      description: initialData?.description || "",
+      title: initialData?.title || '',
+      description: initialData?.description || '',
       categoryId: initialData?.categoryId ? initialData.categoryId : undefined,
       status: initialData?.status || TodoStatus.PENDING,
       priority: initialData?.priority || TodoPriority.MEDIUM,
-      imageUrl: initialData?.imageUrl || "",
-      imageAlt: initialData?.imageAlt || "",
+      imageUrl: initialData?.imageUrl || '',
+      imageAlt: initialData?.imageAlt || '',
       completed: initialData?.completed || false,
       dueDate: initialData?.dueDate
-        ? new Date(initialData.dueDate).toISOString().split("T")[0]
-        : "",
+        ? new Date(initialData.dueDate).toISOString().split('T')[0]
+        : '',
       userId: user.id,
     },
   });
@@ -100,7 +94,7 @@ export function TodoForm({
   const handleCategoryAdded = (newCategory: Category) => {
     setCategories((prev) => [...prev, newCategory]);
     // Automatically select the newly created category
-    form.setValue("categoryId", newCategory.id);
+    form.setValue('categoryId', newCategory.id);
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -118,8 +112,8 @@ export function TodoForm({
   const removeImage = () => {
     setImageFile(null);
     setImagePreview(null);
-    form.setValue("imageUrl", "");
-    form.setValue("imageAlt", "");
+    form.setValue('imageUrl', '');
+    form.setValue('imageAlt', '');
   };
 
   const onSubmit = (data: FormData) => {
@@ -129,19 +123,19 @@ export function TodoForm({
 
         // Add all form fields
         Object.entries(data).forEach(([key, value]) => {
-          if (value !== undefined && value !== null && value !== "") {
-            if (key === "categoryId") {
+          if (value !== undefined && value !== null && value !== '') {
+            if (key === 'categoryId') {
               // Handle "none" value for categoryId
-              if (value === "none") {
+              if (value === 'none') {
                 // Don't append categoryId if "none" is selected
                 return;
               }
-              if (typeof value === "number") {
+              if (typeof value === 'number') {
                 formData.append(key, value.toString());
-              } else if (typeof value === "string" && value !== "none") {
+              } else if (typeof value === 'string' && value !== 'none') {
                 formData.append(key, value);
               }
-            } else if (key === "completed" && typeof value === "boolean") {
+            } else if (key === 'completed' && typeof value === 'boolean') {
               formData.append(key, value.toString());
             } else {
               formData.append(key, value as string);
@@ -151,7 +145,7 @@ export function TodoForm({
 
         // Add image file if present
         if (imageFile) {
-          formData.append("image", imageFile);
+          formData.append('image', imageFile);
         }
 
         if (initialData) {
@@ -160,7 +154,7 @@ export function TodoForm({
           await createTodoAction(formData);
         }
       } catch (error) {
-        console.error("Error saving todo:", error);
+        console.error('Error saving todo:', error);
       }
     });
   };
@@ -168,7 +162,7 @@ export function TodoForm({
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{initialData ? "Edit Todo" : "Create New Todo"}</CardTitle>
+        <CardTitle>{initialData ? 'Edit Todo' : 'Create New Todo'}</CardTitle>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -220,13 +214,13 @@ export function TodoForm({
                     <FormLabel>Category</FormLabel>
                     <Select
                       onValueChange={(value) => {
-                        if (value === "none") {
+                        if (value === 'none') {
                           field.onChange(undefined);
                         } else {
                           field.onChange(parseInt(value, 10));
                         }
                       }}
-                      value={field.value?.toString() || "none"}
+                      value={field.value?.toString() || 'none'}
                     >
                       <FormControl className="w-full">
                         <SelectTrigger>
@@ -236,10 +230,7 @@ export function TodoForm({
                       <SelectContent>
                         <SelectItem value="none">No category</SelectItem>
                         {categories.map((category) => (
-                          <SelectItem
-                            key={category.id}
-                            value={category.id.toString()}
-                          >
+                          <SelectItem key={category.id} value={category.id.toString()}>
                             <div className="flex items-center">
                               {category.color && (
                                 <div
@@ -270,7 +261,7 @@ export function TodoForm({
                   <FormItem>
                     <FormLabel>Due Date</FormLabel>
                     <FormControl>
-                      <Input type="date" {...field} value={field.value || ""} />
+                      <Input type="date" {...field} value={field.value || ''} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -293,13 +284,9 @@ export function TodoForm({
                       </FormControl>
                       <SelectContent>
                         <SelectItem value={TodoPriority.LOW}>Low</SelectItem>
-                        <SelectItem value={TodoPriority.MEDIUM}>
-                          Medium
-                        </SelectItem>
+                        <SelectItem value={TodoPriority.MEDIUM}>Medium</SelectItem>
                         <SelectItem value={TodoPriority.HIGH}>High</SelectItem>
-                        <SelectItem value={TodoPriority.URGENT}>
-                          Urgent
-                        </SelectItem>
+                        <SelectItem value={TodoPriority.URGENT}>Urgent</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -320,18 +307,10 @@ export function TodoForm({
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value={TodoStatus.PENDING}>
-                          Pending
-                        </SelectItem>
-                        <SelectItem value={TodoStatus.IN_PROGRESS}>
-                          In Progress
-                        </SelectItem>
-                        <SelectItem value={TodoStatus.COMPLETED}>
-                          Completed
-                        </SelectItem>
-                        <SelectItem value={TodoStatus.ARCHIVED}>
-                          Archived
-                        </SelectItem>
+                        <SelectItem value={TodoStatus.PENDING}>Pending</SelectItem>
+                        <SelectItem value={TodoStatus.IN_PROGRESS}>In Progress</SelectItem>
+                        <SelectItem value={TodoStatus.COMPLETED}>Completed</SelectItem>
+                        <SelectItem value={TodoStatus.ARCHIVED}>Archived</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -346,16 +325,11 @@ export function TodoForm({
               render={({ field }) => (
                 <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                   <FormControl>
-                    <Checkbox
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
+                    <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                   </FormControl>
                   <div className="space-y-1 leading-none">
                     <FormLabel>Mark as completed</FormLabel>
-                    <FormDescription>
-                      Check this if the todo is already completed
-                    </FormDescription>
+                    <FormDescription>Check this if the todo is already completed</FormDescription>
                   </div>
                 </FormItem>
               )}
@@ -402,9 +376,7 @@ export function TodoForm({
                           onChange={handleImageChange}
                         />
                       </div>
-                      <p className="text-xs text-gray-500 mt-1">
-                        PNG, JPG up to 5MB
-                      </p>
+                      <p className="text-xs text-gray-500 mt-1">PNG, JPG up to 5MB</p>
                     </div>
                   )}
                 </div>
@@ -420,9 +392,7 @@ export function TodoForm({
                       <FormControl>
                         <Input placeholder="Describe the image..." {...field} />
                       </FormControl>
-                      <FormDescription>
-                        Describe the image for accessibility
-                      </FormDescription>
+                      <FormDescription>Describe the image for accessibility</FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -431,21 +401,17 @@ export function TodoForm({
             </div>
 
             <div className="flex justify-end space-x-4">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => window.history.back()}
-              >
+              <Button type="button" variant="outline" onClick={() => window.history.back()}>
                 Cancel
               </Button>
               <Button type="submit" disabled={isPending}>
                 {isPending
                   ? initialData
-                    ? "Updating..."
-                    : "Creating..."
+                    ? 'Updating...'
+                    : 'Creating...'
                   : initialData
-                    ? "Update Todo"
-                    : "Create Todo"}
+                    ? 'Update Todo'
+                    : 'Create Todo'}
               </Button>
             </div>
           </form>
