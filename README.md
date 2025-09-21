@@ -1,5 +1,3 @@
-![Banner](banner.svg)
-
 # ⚡ Full-Stack Next.js + Cloudflare Template
 
 A production-ready template for building full-stack applications with Next.js 15 and Cloudflare's powerful edge infrastructure. Perfect for MVPs with generous free tiers and seamless scaling to enterprise-level applications.
