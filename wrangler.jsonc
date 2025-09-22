@@ -43,6 +43,7 @@
     "BETTER_AUTH_URL": "http://localhost:3000",
     "GOOGLE_CLIENT_ID": "google-client-id-placeholder",
     "GOOGLE_CLIENT_SECRET": "google-client-secret-placeholder",
+    "CLOUDFLARE_R2_URL": "placeholder-url",
   },
   /**
    * Note: Use secrets to store sensitive data.
